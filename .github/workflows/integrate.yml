@@ -1,5 +1,10 @@
 name: CICD Demo
 
+# Added due to last failure (GPT told me to)
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     branches:
