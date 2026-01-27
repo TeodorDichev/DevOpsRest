@@ -26,9 +26,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/devops-demo:latest .
+          docker build -t ghcr.io/${{ github.repository | lower }}/devops-demo:latest .
 
       - name: Push Docker Image
         if: github.ref == 'refs/heads/main'
         run: |
-          docker push ghcr.io/${{ github.repository }}/devops-demo:latest
+          docker push ghcr.io/${{ github.repository | lower }}/devops-demo:latest
