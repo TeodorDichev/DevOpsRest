@@ -3,11 +3,11 @@ name: CICD Demo
 on:
   push:
     branches:
-      - '**'
+      - '**'  # Run on all branches
   pull_request:
 
 jobs:
-  # removed the lint which was in the example from GitHub. I do not think it is needed here
+  # No need for lint in my demo
 
   build-and-push:
     name: Build and Push Docker Image
@@ -17,19 +17,30 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # For the case sensitivity https://github.com/orgs/community/discussions/25768
+      # Set lowercase repository variable
+      # - github.repository (inside ${{ }}) cannot be lowercased directly in GitHub Actions expressions.
+      #   See discussion: https://github.com/orgs/community/discussions/25768
+      # - GITHUB_REPOSITORY is an environment variable available inside shell scripts.
+      #   It contains the same value as github.repository, but we can manipulate it with Bash:
+      #   https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+      # - GHCR requires lowercase for owner and repo in image paths. Took me a while to figure out.
+      - name: Set lowercase repository
+        run: |
+          REPO_LOWER=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
+          echo "REPOSITORY=$REPO_LOWER" >> $GITHUB_ENV
+
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/${{github.repository@L}}/devops-demo:latest .
+          docker build -t ghcr.io/$REPOSITORY/devops-demo:latest .
 
       - name: Push Docker Image
         if: github.ref == 'refs/heads/main'
         run: |
-          docker push ghcr.io/${{github.repository@L}}/devops-demo:latest
+          docker push ghcr.io/$REPOSITORY/devops-demo:latest
