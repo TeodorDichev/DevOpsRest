@@ -1,0 +1,35 @@
+name: CICD Demo
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  # removed the lint which was in the example from GitHub. I do not think it is needed here
+
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/devops-demo:latest .
+
+      - name: Push Docker Image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push ghcr.io/${{ github.repository }}/devops-demo:latest
