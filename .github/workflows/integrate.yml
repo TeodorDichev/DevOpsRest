@@ -24,11 +24,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # For the case sensitivity https://github.com/orgs/community/discussions/25768
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/${{ github.repository | lower }}/devops-demo:latest .
+          docker build -t ghcr.io/${{github.repository@L}}/devops-demo:latest .
 
       - name: Push Docker Image
         if: github.ref == 'refs/heads/main'
         run: |
-          docker push ghcr.io/${{ github.repository | lower }}/devops-demo:latest
+          docker push ghcr.io/${{github.repository@L}}/devops-demo:latest
