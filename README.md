@@ -14,8 +14,8 @@ provisioning an AWS EC2 instance with Terraform, and running your container on E
    that sets up the working directory, copies your source files, compiles Java files, 
    exposes the required port, and sets the default command to launch your app.
 4. Build the Docker image locally and verify that it works.
-   * docker build -t <name> . _example devops-demo
-   * docker run -p <host-port>:<container-port> <name> _example: 8080:80
+   * docker build -t <name> . _example devops-demo_
+   * docker run -p <host-port>:<container-port> <name> _example: 8080:80_
 
 ---
 
@@ -74,7 +74,7 @@ provisioning an AWS EC2 instance with Terraform, and running your container on E
     * sudo systemctl enable docker
     * docker pull ghcr.io/<your-username>/<repo-name>:latest
     * docker run -d -p 80:80 ghcr.io/<your-username>/<repo-name>:latest
-      _In my case the latter two were:
+      _In my case the latter two were:_
     * sudo docker pull ghcr.io/teodordichev/devopsrest/devops-demo:latest
     * sudo docker run -d -p 80:80 ghcr.io/teodordichev/devopsrest/devops-demo:latest
 5. Verify the container is running and accessible locally.
