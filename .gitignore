@@ -23,3 +23,9 @@
 hs_err_pid*
 replay_pid*
 /.idea/
+/terraform/devops-demo-key.pem
+/configs.txt
+/terraform/.terraform/
+/terraform/terraform.tfstate
+/terraform/terraform.tfstate.backup
+/terraform/id_rsa_tofu.pem
