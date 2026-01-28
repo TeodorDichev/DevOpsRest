@@ -1,39 +1,28 @@
-# Configure AWS provider
+# Can be changed to eu-north-e but then you have to change the ami and check what will the instance be ran on
 provider "aws" {
   region = "us-east-1"
 }
-
-# Get Home path
-# data "external" "home" {
-#   program = ["sh", "-c", "echo '{\"value\":\"'$HOME'\"}'"]
-# }
-
-
-# Create ansible key pair
 resource "aws_key_pair" "ansible_key_pair" {
   key_name   = "ansible_key_pair"
   public_key = tls_private_key.ansible_key.public_key_openssh
 }
 
 resource "aws_instance" "webservers" {
-  count = 2 # create three similar EC2 instances
-
   ami           = "ami-0ecb62995f68bb549"
   instance_type = "t3.micro"
   vpc_security_group_ids = [
     aws_security_group.allow_web_traffic.id
   ]
-  # Reference ansible key pair
+
   key_name = aws_key_pair.ansible_key_pair.key_name
   user_data = file("${path.module}/resources/user_data.sh")
 
   tags = {
-    Name = "web${count.index}"
+    Name = "web"
     Role = "webserver"
     Public = "true"
   }
 }
-
 
 resource "aws_security_group" "allow_web_traffic" {
   name        = "allow_web_traffic"
@@ -46,7 +35,6 @@ resource "aws_security_group" "allow_web_traffic" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
 
   ingress {
     description = "TLS from anywhere"

@@ -29,3 +29,4 @@ replay_pid*
 /terraform/terraform.tfstate
 /terraform/terraform.tfstate.backup
 /terraform/id_rsa_tofu.pem
+/terraform/ansible/inventory.ini

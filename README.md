@@ -84,3 +84,4 @@ provisioning an AWS EC2 instance with Terraform, and running your container on E
 ---
 
 This guide covers all steps from local development to deploying your containerized app on AWS EC2 with a CI/CD workflow in GitHub Actions.
+Check instances in the browser here: https://us-east-1.console.aws.amazon.com/
