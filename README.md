@@ -83,5 +83,13 @@ provisioning an AWS EC2 instance with Terraform, and running your container on E
     
 ---
 
+## Running Ansible playbook (step-by-step)
+
+1. After all other steps are completed, and we have working EC2 instance we can run the playbook
+2. Run this command in the ansible directory
+   * ansible-playbook -i inventory.ini deploy.yml _It will connect to the instance, install docker and run the container_
+
+---
+
 This guide covers all steps from local development to deploying your containerized app on AWS EC2 with a CI/CD workflow in GitHub Actions.
 Check instances in the browser here: https://us-east-1.console.aws.amazon.com/

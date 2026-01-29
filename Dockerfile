@@ -1,17 +1,11 @@
-# Use official OpenJDK 25 image
-FROM eclipse-temurin:25-jdk-jammy
-
-# Set working directory
-WORKDIR /app
-
-# Copy source files
+FROM eclipse-temurin:25-jdk-jammy AS build
+WORKDIR /build
 COPY src ./src
+RUN javac -d out src/handlers/*.java src/*.java
 
-# Compile Java files
-RUN javac src/handlers/*.java src/*.java
-
-# Expose port 80
+FROM eclipse-temurin:25-jre-jammy
+WORKDIR /app
+COPY --from=build /build/out .
 EXPOSE 80
 
-# Run the app
-CMD ["java", "-cp", "src", "Launcher"]
+CMD ["java", "Launcher"]
